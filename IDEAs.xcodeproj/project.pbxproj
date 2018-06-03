@@ -7,21 +7,53 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08B67BB50D33A7EB5825D78B /* Pods_IDEAs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6AD77326068EFAC090E18E7 /* Pods_IDEAs.framework */; };
+		EF059A0A20BC84D800C3C1F0 /* ApprovedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF059A0920BC84D800C3C1F0 /* ApprovedTableViewController.swift */; };
+		EF059A0C20BC84EA00C3C1F0 /* DeniedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF059A0B20BC84EA00C3C1F0 /* DeniedTableViewController.swift */; };
+		EF059A0E20BC880F00C3C1F0 /* VotingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF059A0D20BC880F00C3C1F0 /* VotingViewController.swift */; };
+		EF2BF69A20BF9B7C00AC0EF6 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF2BF69920BF9B7C00AC0EF6 /* DashboardViewController.swift */; };
+		EF42083D20C18D9D00FDD310 /* ApprovedResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF42083C20C18D9D00FDD310 /* ApprovedResultsViewController.swift */; };
 		EFB2665C20BB1C9700DBDE02 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB2665B20BB1C9700DBDE02 /* AppDelegate.swift */; };
-		EFB2665E20BB1C9700DBDE02 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB2665D20BB1C9700DBDE02 /* ViewController.swift */; };
+		EFB2665E20BB1C9700DBDE02 /* ActiveTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB2665D20BB1C9700DBDE02 /* ActiveTableViewController.swift */; };
 		EFB2666120BB1C9700DBDE02 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EFB2665F20BB1C9700DBDE02 /* Main.storyboard */; };
 		EFB2666320BB1C9B00DBDE02 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFB2666220BB1C9B00DBDE02 /* Assets.xcassets */; };
 		EFB2666620BB1C9B00DBDE02 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EFB2666420BB1C9B00DBDE02 /* LaunchScreen.storyboard */; };
+		EFE3D97B20BBC35500D01422 /* Idea.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE3D97A20BBC35500D01422 /* Idea.swift */; };
+		EFE3D97D20BBC63600D01422 /* ActiveTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE3D97C20BBC63600D01422 /* ActiveTableViewCell.swift */; };
+		EFF00B5520BB1FC200E2DCD1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EFF00B5420BB1FC200E2DCD1 /* GoogleService-Info.plist */; };
+		EFF00B5B20BB4B3800E2DCD1 /* AddIdeaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF00B5A20BB4B3700E2DCD1 /* AddIdeaViewController.swift */; };
+		EFF1C29820BE567F00595D1C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF1C29720BE567F00595D1C /* User.swift */; };
+		EFF1C29A20BE574B00595D1C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF1C29920BE574B00595D1C /* LoginViewController.swift */; };
+		EFF1C29C20BE577500595D1C /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF1C29B20BE577500595D1C /* RegisterViewController.swift */; };
+		EFF38AC420BCFE5B00A6D4D1 /* ApprovedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF38AC320BCFE5B00A6D4D1 /* ApprovedTableViewCell.swift */; };
+		EFF38AC620BCFE7300A6D4D1 /* DeniedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF38AC520BCFE7300A6D4D1 /* DeniedTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7F349BEE456BF00F0DD6A6A7 /* Pods-IDEAs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IDEAs.release.xcconfig"; path = "Pods/Target Support Files/Pods-IDEAs/Pods-IDEAs.release.xcconfig"; sourceTree = "<group>"; };
+		A6AD77326068EFAC090E18E7 /* Pods_IDEAs.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IDEAs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6762C8B7061164A9FC06E33 /* Pods-IDEAs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IDEAs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-IDEAs/Pods-IDEAs.debug.xcconfig"; sourceTree = "<group>"; };
+		EF059A0920BC84D800C3C1F0 /* ApprovedTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovedTableViewController.swift; sourceTree = "<group>"; };
+		EF059A0B20BC84EA00C3C1F0 /* DeniedTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeniedTableViewController.swift; sourceTree = "<group>"; };
+		EF059A0D20BC880F00C3C1F0 /* VotingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingViewController.swift; sourceTree = "<group>"; };
+		EF2BF69920BF9B7C00AC0EF6 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
+		EF42083C20C18D9D00FDD310 /* ApprovedResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovedResultsViewController.swift; sourceTree = "<group>"; };
 		EFB2665820BB1C9700DBDE02 /* IDEAs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IDEAs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFB2665B20BB1C9700DBDE02 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		EFB2665D20BB1C9700DBDE02 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		EFB2665D20BB1C9700DBDE02 /* ActiveTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveTableViewController.swift; sourceTree = "<group>"; };
 		EFB2666020BB1C9700DBDE02 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EFB2666220BB1C9B00DBDE02 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EFB2666520BB1C9B00DBDE02 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EFB2666720BB1C9B00DBDE02 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EFE3D97A20BBC35500D01422 /* Idea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Idea.swift; sourceTree = "<group>"; };
+		EFE3D97C20BBC63600D01422 /* ActiveTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveTableViewCell.swift; sourceTree = "<group>"; };
+		EFF00B5420BB1FC200E2DCD1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EFF00B5A20BB4B3700E2DCD1 /* AddIdeaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIdeaViewController.swift; sourceTree = "<group>"; };
+		EFF1C29720BE567F00595D1C /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		EFF1C29920BE574B00595D1C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		EFF1C29B20BE577500595D1C /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		EFF38AC320BCFE5B00A6D4D1 /* ApprovedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovedTableViewCell.swift; sourceTree = "<group>"; };
+		EFF38AC520BCFE7300A6D4D1 /* DeniedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeniedTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +61,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08B67BB50D33A7EB5825D78B /* Pods_IDEAs.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6B437F791AD470D2B681A45F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A6AD77326068EFAC090E18E7 /* Pods_IDEAs.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6C3AF5308DE4A01576135ECA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E6762C8B7061164A9FC06E33 /* Pods-IDEAs.debug.xcconfig */,
+				7F349BEE456BF00F0DD6A6A7 /* Pods-IDEAs.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		EFB2664F20BB1C9700DBDE02 = {
 			isa = PBXGroup;
 			children = (
 				EFB2665A20BB1C9700DBDE02 /* IDEAs */,
 				EFB2665920BB1C9700DBDE02 /* Products */,
+				6C3AF5308DE4A01576135ECA /* Pods */,
+				6B437F791AD470D2B681A45F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,14 +106,52 @@
 		EFB2665A20BB1C9700DBDE02 /* IDEAs */ = {
 			isa = PBXGroup;
 			children = (
-				EFB2665B20BB1C9700DBDE02 /* AppDelegate.swift */,
-				EFB2665D20BB1C9700DBDE02 /* ViewController.swift */,
-				EFB2665F20BB1C9700DBDE02 /* Main.storyboard */,
+				EFB2666F20BB1CD100DBDE02 /* Controller */,
+				EFB2666E20BB1CCC00DBDE02 /* View */,
+				EFB2666D20BB1CC600DBDE02 /* Model */,
 				EFB2666220BB1C9B00DBDE02 /* Assets.xcassets */,
 				EFB2666420BB1C9B00DBDE02 /* LaunchScreen.storyboard */,
 				EFB2666720BB1C9B00DBDE02 /* Info.plist */,
+				EFF00B5420BB1FC200E2DCD1 /* GoogleService-Info.plist */,
 			);
 			path = IDEAs;
+			sourceTree = "<group>";
+		};
+		EFB2666D20BB1CC600DBDE02 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				EFE3D97A20BBC35500D01422 /* Idea.swift */,
+				EFF1C29720BE567F00595D1C /* User.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		EFB2666E20BB1CCC00DBDE02 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				EFB2665B20BB1C9700DBDE02 /* AppDelegate.swift */,
+				EFB2665F20BB1C9700DBDE02 /* Main.storyboard */,
+				EFE3D97C20BBC63600D01422 /* ActiveTableViewCell.swift */,
+				EFF38AC320BCFE5B00A6D4D1 /* ApprovedTableViewCell.swift */,
+				EFF38AC520BCFE7300A6D4D1 /* DeniedTableViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		EFB2666F20BB1CD100DBDE02 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				EFB2665D20BB1C9700DBDE02 /* ActiveTableViewController.swift */,
+				EFF00B5A20BB4B3700E2DCD1 /* AddIdeaViewController.swift */,
+				EF059A0920BC84D800C3C1F0 /* ApprovedTableViewController.swift */,
+				EF059A0B20BC84EA00C3C1F0 /* DeniedTableViewController.swift */,
+				EF059A0D20BC880F00C3C1F0 /* VotingViewController.swift */,
+				EFF1C29920BE574B00595D1C /* LoginViewController.swift */,
+				EF2BF69920BF9B7C00AC0EF6 /* DashboardViewController.swift */,
+				EF42083C20C18D9D00FDD310 /* ApprovedResultsViewController.swift */,
+				EFF1C29B20BE577500595D1C /* RegisterViewController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +161,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = EFB2666A20BB1C9B00DBDE02 /* Build configuration list for PBXNativeTarget "IDEAs" */;
 			buildPhases = (
+				452161B1FD685685E7848F0F /* [CP] Check Pods Manifest.lock */,
 				EFB2665420BB1C9700DBDE02 /* Sources */,
 				EFB2665520BB1C9700DBDE02 /* Frameworks */,
 				EFB2665620BB1C9700DBDE02 /* Resources */,
+				960FB0E19F1E338A2447EE9B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -123,6 +215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EFB2666620BB1C9B00DBDE02 /* LaunchScreen.storyboard in Resources */,
+				EFF00B5520BB1FC200E2DCD1 /* GoogleService-Info.plist in Resources */,
 				EFB2666320BB1C9B00DBDE02 /* Assets.xcassets in Resources */,
 				EFB2666120BB1C9700DBDE02 /* Main.storyboard in Resources */,
 			);
@@ -130,13 +223,83 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		452161B1FD685685E7848F0F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-IDEAs-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		960FB0E19F1E338A2447EE9B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-IDEAs/Pods-IDEAs-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AEAccordion/AEAccordion.framework",
+				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
+				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/Spring/Spring.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftCharts/SwiftCharts.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AEAccordion.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Spring.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftCharts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-IDEAs/Pods-IDEAs-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		EFB2665420BB1C9700DBDE02 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EFB2665E20BB1C9700DBDE02 /* ViewController.swift in Sources */,
+				EFF1C29A20BE574B00595D1C /* LoginViewController.swift in Sources */,
+				EF2BF69A20BF9B7C00AC0EF6 /* DashboardViewController.swift in Sources */,
+				EFF38AC420BCFE5B00A6D4D1 /* ApprovedTableViewCell.swift in Sources */,
+				EF059A0A20BC84D800C3C1F0 /* ApprovedTableViewController.swift in Sources */,
+				EFF38AC620BCFE7300A6D4D1 /* DeniedTableViewCell.swift in Sources */,
+				EFE3D97D20BBC63600D01422 /* ActiveTableViewCell.swift in Sources */,
+				EFE3D97B20BBC35500D01422 /* Idea.swift in Sources */,
+				EF059A0E20BC880F00C3C1F0 /* VotingViewController.swift in Sources */,
+				EF059A0C20BC84EA00C3C1F0 /* DeniedTableViewController.swift in Sources */,
+				EFF00B5B20BB4B3800E2DCD1 /* AddIdeaViewController.swift in Sources */,
+				EFB2665E20BB1C9700DBDE02 /* ActiveTableViewController.swift in Sources */,
+				EFF1C29C20BE577500595D1C /* RegisterViewController.swift in Sources */,
 				EFB2665C20BB1C9700DBDE02 /* AppDelegate.swift in Sources */,
+				EF42083D20C18D9D00FDD310 /* ApprovedResultsViewController.swift in Sources */,
+				EFF1C29820BE567F00595D1C /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,15 +441,17 @@
 		};
 		EFB2666B20BB1C9B00DBDE02 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E6762C8B7061164A9FC06E33 /* Pods-IDEAs.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PDBCLG3A2H;
 				INFOPLIST_FILE = IDEAs/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.IDEAs;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaredboynton.IDEAs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -295,15 +460,17 @@
 		};
 		EFB2666C20BB1C9B00DBDE02 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7F349BEE456BF00F0DD6A6A7 /* Pods-IDEAs.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PDBCLG3A2H;
 				INFOPLIST_FILE = IDEAs/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.IDEAs;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaredboynton.IDEAs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
