@@ -14,6 +14,10 @@ import FirebaseAuth
 var isAdmin = false
 
 class LoginViewController: UIViewController {
+    
+    
+    //MARK: - SETTING UP VARIABLES
+    @IBOutlet var keyboardHeightLayoutConstraint: NSLayoutConstraint?
 
     @IBOutlet weak var emailAddressTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -21,26 +25,51 @@ class LoginViewController: UIViewController {
     var truncatedEmail = ""
     let user = User()
     
+    
+    
+    
+    
+    
+    //MARK: - STANDARD VIEW DID LOAD
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //functionality to let the user click away from keyboard and onto screen to dismiss keyboard.
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         view.addGestureRecognizer(tapGesture)
+    
 
         loginButton.layer.cornerRadius = 15
     }
+
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    
+    
+    
+    
+//MARK: - SETUP WHEN TO REGISTER THE TAP GESTURE AFTER EDITING TEXT
+    
     @objc func viewTapped(){
         //this is what calls the 'textFieldDidEndEditing'
         emailAddressTextField.endEditing(true)
         passwordTextField.endEditing(true)
     }
+    
+    
+    
+    
+    
+    
+    
+    
+//MARK: - SETUP BUTTONS
     
     @IBAction func loginButtonPressed(_ sender: Any) {
         
@@ -65,13 +94,5 @@ class LoginViewController: UIViewController {
             }
         }
     }
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "goToIdeas"{
-//            let vc = segue.destination as! ActiveTableViewController
-//            vc.isAdmin = isAdmin
-//        }
-//
-//    }
-    
+
 }

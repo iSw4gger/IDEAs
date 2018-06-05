@@ -15,6 +15,7 @@ import SVProgressHUD
 
 class ActiveTableViewController: UITableViewController {
     
+//MARK: - ADD VARIABLES
 
     @IBOutlet weak var addIdeaButton: UIBarButtonItem!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -23,10 +24,9 @@ class ActiveTableViewController: UITableViewController {
     @IBOutlet weak var graphButton: SpringButton!
     @IBOutlet weak var logoutButtonOutlet: UIBarButtonItem!
     
-    //MARK: DECLARE VARIABLES
-    var ideaArray = [Idea]()
     var approvedArray = [Idea]()
     var deniedArray = [Idea]()
+    var ideaArray : [Idea] = [Idea]()
     
     //Global variables to store the date and create the sections
     var dateArray = [String]()
@@ -39,11 +39,21 @@ class ActiveTableViewController: UITableViewController {
     
     @IBOutlet var activeIdeaTableView: UITableView!
     
+    
+    
+    
+    
+    
+    
+//MARK: - STANDARD VIEW CODE
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        retrieveData()
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
+
         //admin determined in the login VC. will need to add to the register VC??
         addIdeaButton.isEnabled = false
         if isAdmin == true{
@@ -56,16 +66,14 @@ class ActiveTableViewController: UITableViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        retrieveData()
         approvedArray.removeAll()
         deniedArray.removeAll()
-        retrieveData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    
     }
-        
-        //functionality to let the user click away from keyboard and onto screen to dismiss keyboard. Commented out for now, but wil need for the search bar
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
-//        view.addGestureRecognizer(tapGesture)
-        
-        
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -74,11 +82,9 @@ class ActiveTableViewController: UITableViewController {
         }
 
         //NEED MORE TESTING TO SEE WHY ACTIVE IDEAS DUPLICATE
-        retrieveData()
         tableView.reloadData()
         activeIdeaTableView.reloadData()
     }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -86,10 +92,17 @@ class ActiveTableViewController: UITableViewController {
     }
     
     
-    //MARK: RETRIEVING AND STORING DATA
+    
+    
+    
+    
+    
+    
+//MARK: RETRIEVING AND STORING DATA
+    
     func retrieveData(){
         ideaArray.removeAll()
-        
+
         let ideaDB = Database.database().reference().child("ActiveIdeaDB")
         ideaDB.observe(.childAdded) { (snapshot) in
             //.value sends back an object type of 'any', so we have to cast it to dictionary.
@@ -100,7 +113,7 @@ class ActiveTableViewController: UITableViewController {
             let active = snapShotValue["Active"]
             let approved = snapShotValue["Approved"]
             let date = snapShotValue["IDEA Added Date"]
-            
+
             let idea = Idea()
             idea.isActive = active as! Bool
             idea.isApproved = approved as! Bool
@@ -108,10 +121,10 @@ class ActiveTableViewController: UITableViewController {
             idea.ideaID = iD! as! String
             idea.ideaTitle = title as! String
             self.stringDate = date as! String
-            
+
             //to be used for sections if i can
             self.dateArray.append(self.stringDate)
-    
+
             if idea.isActive == true{
                 self.ideaArray.append(idea)
             }else if idea.isApproved == true{
@@ -124,7 +137,16 @@ class ActiveTableViewController: UITableViewController {
         }
     }
     
-    //MARK: -  SET UP TABLE VIEW
+    
+    
+    
+    
+    
+    
+    
+    
+//MARK: -  SET UP TABLE VIEW
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return ideaArray.count
     }
@@ -132,7 +154,6 @@ class ActiveTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //default functions to setup table view. Use this to set the values of the labels from the cell.
         let cell = tableView.dequeueReusableCell(withIdentifier: "activeTableViewCell", for: indexPath) as! ActiveTableViewCell
-        
         //assign array values to the cells. I did this to prevent out of bounds index problems.
         if ideaArray.isEmpty{
             print("array is empty in ActiveVC")
@@ -145,7 +166,6 @@ class ActiveTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
         //assigns the class variables to the values of the row that was clicked on. This is so we can send it to the VoteViewController so it can be displayed over there.
         ideaTitle = ideaArray[indexPath.row].ideaTitle
         ideaID = Int(ideaArray[indexPath.row].ideaID)!
@@ -173,6 +193,16 @@ class ActiveTableViewController: UITableViewController {
         return [delete, edit]
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
+//MARK: - PREPARE THE DATA FOR MOVEMENT TO ANOTHER VC
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         //This method is necessary to set the class variables located here to the class variables in the VoteViewController. These class variable values were assigned in the 'didSelectRow' function.
@@ -197,6 +227,16 @@ class ActiveTableViewController: UITableViewController {
             print("This is from active prepare for segue \(approvedArray.count) and \(deniedArray.count)")
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+//MARK: - LOGOUT FUNCTIONALITY
     
     @IBAction func logoutButtonPressed(_ sender: Any) {
         

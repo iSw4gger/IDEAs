@@ -17,6 +17,8 @@ import FirebaseAuth
 
 class VotingViewController: UIViewController {
 
+//MARK: - SETTING UP VARIABLES
+    
     //setup outlets
     @IBOutlet weak var voteIdeaTitle: UILabel!
     @IBOutlet weak var voteIdeaDescription: UILabel!
@@ -25,6 +27,7 @@ class VotingViewController: UIViewController {
     @IBOutlet weak var approveButton: SpringButton!
     @IBOutlet weak var denyButton: SpringButton!
     @IBOutlet weak var pieChartView: PieChartView!
+    @IBOutlet weak var barChartView: BarChartView!
     
     
     //grab an Idea object
@@ -53,10 +56,21 @@ class VotingViewController: UIViewController {
     //must use an array of 'entries'. This time it's PieChartDataEntry
     var numberOfVotesDataEntries = [PieChartDataEntry]()
     
+    
+    
+    
+    
+    
+    
+    
+
+//MARK: - STANDARD VIEW DID LOAD
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         retrieveData()
-  
+        
+        
         //grabs the current email and erases everything past the @ symbol so it can be added to DB as child
         email = (currentUser?.email)!
         if let dotRange = email.range(of: "@") {
@@ -64,6 +78,10 @@ class VotingViewController: UIViewController {
         }
         //set the title of the NavBar to the ideaID
         self.title = "IDEA # \(ideaID)"
+        
+        barChartView.noDataText = "No Data Available"
+        
+        barChartUpdate()
         
         //set the text labels in this class to the values that were segued over from the Active VC
         voteIdeaTitle.text = ideaTitle.uppercased()
@@ -79,10 +97,8 @@ class VotingViewController: UIViewController {
         denyButton.setBackgroundImage(deniedImage, for: .normal)
         denyButton.tintColor = UIColor.flatPurple()
         
-        //MARK: - INITIAL PIE CHART DETAILS
-        
         //dont want a description as it's ugly.
-        pieChartView.chartDescription?.text = ""
+        //pieChartView.chartDescription?.text = ""
         
         //sets the label in the chart and on the legend.
         approvedDataEntry.label = "Approved"
@@ -101,22 +117,20 @@ class VotingViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //this is necessary to remove the rows that were switched from active to inactive. Otherwise, still appears in the active VC
-        if segue.identifier == "segueToVote"{
-            let vc = segue.destination as! ActiveTableViewController
-            vc.retrieveData()
-            
-        }
-    }
+    
+    
+    
+    
+    
+    
+    
+    //MARK: - SETTING UP THE VOTING BUTTONS
     
     @IBAction func approveButtonPressed(_ sender: Any) {
         
-        
-        //pop up that dismisses after a short delay.
-        SVProgressHUD.showSuccess(withStatus: "You approved this IDEA.")
-        SVProgressHUD.dismiss(withDelay: 0.4)
-        SVProgressHUD.setDefaultAnimationType(.flat)
+//        approveButton.animation = "fall"
+//        approveButton.animate()
+
         // grab a reference of the master DB + child DB and update those points within the ideaID
         let ref = Database.database().reference().child("ActiveIdeaDB/\(ideaID)")
 
@@ -132,7 +146,7 @@ class VotingViewController: UIViewController {
         
         
         //created a dictionary to store the values in the database. Each of these will be separate data points. They come from what the user typed in, plus the original values stored in the Idea class.
-        let ideaDictionary: [String:String] = ["Email" : email]
+        let ideaDictionary: [String:String] = [email : email]
         
         //we use the 'ActiveIdeaDB' database and insert a child with the ideaID so that all the values above can be stored within each ID. Must use closure for error checking.
         ref.child("Approver").updateChildValues(ideaDictionary){
@@ -141,7 +155,8 @@ class VotingViewController: UIViewController {
                 print(error!)
             }else{
                 print("success")
-                self.updateChartData()
+                //self.updateChartData()
+                self.barChartUpdate()
                 self.updateApproveData()
                 self.updateApprovalPerson()
             }
@@ -151,8 +166,8 @@ class VotingViewController: UIViewController {
     
     @IBAction func denyButtonPressed(_ sender: Any) {
         
-        SVProgressHUD.showError(withStatus: "You denied this IDEA.")
-        SVProgressHUD.dismiss(withDelay: 0.4)
+        denyButton.animation = "wobble"
+        denyButton.animate()
 
         let ref = Database.database().reference().child("ActiveIdeaDB/\(ideaID)")
         ref.updateChildValues(["Approved" : false])
@@ -160,7 +175,7 @@ class VotingViewController: UIViewController {
         ref.updateChildValues(["Active" : false])
         ref.updateChildValues(["Number Denied" : self.deniedDataEntry.value + 1])
         
-        let ideaDictionary: [String:String] = ["Email" : email]
+        let ideaDictionary: [String:String] = [email : email]
         
         //we use the 'ActiveIdeaDB' database and insert a child with the ideaID so that all the values above can be stored within each ID. Must use closure for error checking.
         ref.child("Denier").updateChildValues(ideaDictionary){
@@ -169,12 +184,22 @@ class VotingViewController: UIViewController {
                 print(error!)
             }else{
                 print("success")
-                self.updateChartData()
+                //self.updateChartData()
+                self.barChartUpdate()
                 self.updateDenialData()
                 self.updateDenierPerson()
             }
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    //MARK: - GRABBING AND UPDATING DATA FROM DATABASE
 
     func retrieveData(){
         
@@ -200,32 +225,6 @@ class VotingViewController: UIViewController {
         }
     }
     
-    //MARK: - CHART BUILD & UPDATING DATA FOR CHART
-    
-    func updateChartData(){
-        
-        if approvedDataEntry.value == 0 && deniedDataEntry.value == 0{
-            pieChartView.noDataText = "No votes casted"
-        }else{
-            //gotta create a data set using our array.
-            let chartDataSet = PieChartDataSet(values: numberOfVotesDataEntries, label: nil)
-            //add the data set to chart data.
-            let chartData = PieChartData(dataSet: chartDataSet)
-            //change colors of the entries.
-            let colors = [UIColor.flatMint(), UIColor.flatPurple()]
-            chartDataSet.colors = colors as! [NSUIColor]
-        
-            //assign values out.
-            pieChartView.data = chartData
-        
-            //animate a change.
-            pieChartView.animate(xAxisDuration: 0.5)
-            pieChartView.animate(yAxisDuration: 0.5)
-            pieChartView.animate(xAxisDuration: 0.5, yAxisDuration: 0.5, easingOption: .easeInCirc)
-        
-        }
-    }
-    
     func updateApproveData(){
         //calling it on the main thread so it appears on the other persons screen.
         DispatchQueue.main.async {
@@ -235,7 +234,8 @@ class VotingViewController: UIViewController {
                 let appNum = value?["Number Approved"] as! Double
                 self.approvedDataEntry.value = appNum
                 print("This is in updateApproveData" + String(self.approvedDataEntry.value))
-                self.updateChartData()
+                self.barChartUpdate()
+                //self.updateChartData()
             })
         }
     }
@@ -248,7 +248,7 @@ class VotingViewController: UIViewController {
                 
                 //get rid of all data in array so we don't have duplicates. The data will be restored via database
                 self.approverArray.removeAll()
-        
+                
                 //cycle through all snapshot values and assign it to the array.
                 for child in snapshot.children {
                     let snap = child as! DataSnapshot
@@ -299,9 +299,95 @@ class VotingViewController: UIViewController {
                 let appNum = value?["Number Denied"] as! Double
                 self.deniedDataEntry.value = appNum
                 print("This is in deniedData" + String(self.approvedDataEntry.value))
-                self.updateChartData()
+                //self.updateChartData()
+                self.barChartUpdate()
             })
         }
         
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+//MARK: - CHART BUILD & UPDATING DATA FOR CHART
+    
+    func updateChartData(){
+        
+        if approvedDataEntry.value != 0 && deniedDataEntry.value != 0{
+        }else{
+            //gotta create a data set using our array.
+            let chartDataSet = PieChartDataSet(values: numberOfVotesDataEntries, label: nil)
+            //add the data set to chart data.
+            let chartData = PieChartData(dataSet: chartDataSet)
+            //change colors of the entries.
+            let colors = [UIColor.flatMint(), UIColor.flatPurple()]
+            chartDataSet.colors = colors as! [NSUIColor]
+        
+            //assign values out.
+            pieChartView.data = chartData
+        
+            //animate a change.
+            pieChartView.animate(xAxisDuration: 0.5)
+            pieChartView.animate(yAxisDuration: 0.5)
+            pieChartView.animate(xAxisDuration: 0.5, yAxisDuration: 0.5, easingOption: .easeInCirc)
+        
+        }
+    }
+    
+    func barChartUpdate(){
+        //bar chart code
+        
+        let entry1 = BarChartDataEntry(x: 1.0, y: Double(approvedDataEntry.value))//this value is gotten from # approved
+        let entry2 = BarChartDataEntry(x: 2.0, y: Double(deniedDataEntry.value)) //number denied
+        print("barChartUpdate")
+        let dataSet = BarChartDataSet(values: [entry1, entry2], label: "")
+        let data = BarChartData(dataSets: [dataSet])
+        barChartView.data = data
+        barChartView.chartDescription?.text = ""
+        let colors = [UIColor.flatMint(), UIColor.flatPurple()]
+        dataSet.colors = colors as! [NSUIColor]
+        
+        barChartView.drawGridBackgroundEnabled = false
+        barChartView.gridBackgroundColor = UIColor.white
+        barChartView.xAxis.labelTextColor = UIColor.white
+        
+        barChartView.xAxis.drawAxisLineEnabled = false
+        barChartView.xAxis.axisLineColor = UIColor.white
+        
+        barChartView.animate(xAxisDuration: 0.5)
+        barChartView.animate(yAxisDuration: 0.5)
+        barChartView.notifyDataSetChanged()
+        
+        //set y axis min and max
+        barChartView.rightAxis.axisMinimum = 0
+        barChartView.rightAxis.axisMaximum = 10
+        barChartView.leftAxis.axisMinimum = 0
+        barChartView.leftAxis.axisMaximum = 10
+        
+        
+    }
+    
+
+    
+    
+    
+    
+    //MARK: - PREPARING DATA TO BE TRANSFERRED TO ANOTHER VC
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        //this is necessary to remove the rows that were switched from active to inactive. Otherwise, still appears in the active VC
+        if segue.identifier == "segueToVote"{
+            let vc = segue.destination as! ActiveTableViewController
+            vc.retrieveData()
+            
+        }
+    }
+    
 }

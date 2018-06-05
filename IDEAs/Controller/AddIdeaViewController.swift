@@ -14,6 +14,9 @@ import FirebaseDatabase
 
 class AddIdeaViewController: UIViewController {
     
+    
+//MARK: - ADD VARIABLES
+    
     //hook up all outlets.
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var submitButtonOutlet: SpringButton!
@@ -30,6 +33,14 @@ class AddIdeaViewController: UIViewController {
     var dateString = ""
     let idea = Idea()
     var ideaID = 0
+    
+    
+    
+    
+    
+    
+    
+//MARK: - VIEW DID LOAD CODE
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,6 +84,19 @@ class AddIdeaViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
         
     }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+
+    
+    
+    
+    
+    
+    
+    
+//MARK: - SETTING UP TEXT FIELDS FOR EDITING, TAPPING OUT OF, ETC.
     
     @objc func viewTapped(){
         //this is what calls the 'textFieldDidEndEditing'
@@ -125,10 +149,10 @@ class AddIdeaViewController: UIViewController {
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
 
+    
+    
+//MARK: - SETTING UP THE SUBMIT BUTTON
     
     @IBAction func submitButtonPressed(_ sender: Any) {
         
@@ -161,6 +185,12 @@ class AddIdeaViewController: UIViewController {
             }
         }
     }
+    
+    
+    
+    
+    
+//MARK: - GETTING TIME STAMP WHEN ADD IDEA
     
     //when creating a new idea, this grabs th current date and puts it into the defined format.
     func getTimeStamp(){

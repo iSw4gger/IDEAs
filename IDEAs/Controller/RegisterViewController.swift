@@ -13,6 +13,9 @@ import SVProgressHUD
 
 class RegisterViewController: UIViewController {
     
+    
+//MARK: - SETTING UP VARIABLES
+    
     @IBOutlet weak var registerButton: UIButton!
     @IBOutlet weak var registerEmailAddressTextField: UITextField!
     @IBOutlet weak var registerPasswordTextField: UITextField!
@@ -21,6 +24,12 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var lastNameTextField: UITextField!
     @IBOutlet weak var backToLoginButton: UIButton!
     
+    
+    
+    
+    
+    
+//MARK: - STANDARD VIEW DID LOAD
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,19 +45,34 @@ class RegisterViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func backToLoginButtonPressed(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
-    }
+    
+    
+    
+    
+//MARK: - SETTING UP THE REGISTER WHEN TAPPED TO DISMISS KEYBOARD
     
     @objc func viewTapped(){
         //this is what calls the 'textFieldDidEndEditing'
         registerEmailAddressTextField.endEditing(true)
         registerPasswordTextField.endEditing(true)
         confirmPasswordTextField.endEditing(true)
-        firstNameTextField.endEditing(true)        
+        firstNameTextField.endEditing(true)
         lastNameTextField.endEditing(true)
     }
     
+    
+    
+    
+    
+    
+    
+//MARK: - SETTING UP BUTTONS
+    
+    @IBAction func backToLoginButtonPressed(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+
     @IBAction func registerButtonPressed(_ sender: Any) {
         
         SVProgressHUD.show()
@@ -72,6 +96,14 @@ class RegisterViewController: UIViewController {
             }
         }
     }
+    
+    
+    
+    
+    
+    
+    
+//MARK: - UPDATING DATABASE WITH USER DETAILS
     
     func assignUserDetails(){
         //here we are grabbing a reference of our active database.

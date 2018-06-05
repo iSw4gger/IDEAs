@@ -14,7 +14,12 @@ import Charts
 
 class DashboardViewController: UIViewController {
     
-    //bar chart properties
+    
+    
+    
+    
+//MARK: - SETUP VARIABLES
+    
     @IBOutlet weak var graphView: BarChartView!
     
     var ideaDesc: String = ""
@@ -28,6 +33,13 @@ class DashboardViewController: UIViewController {
     var numberDenied = 0
     var numberApproved = 0
     
+    
+    
+    
+    
+    
+//MARK: - STANDARD VIEW DID LOAD CODE
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Total Volume"
@@ -38,11 +50,16 @@ class DashboardViewController: UIViewController {
         
     }
     
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    
+    
+    
+//MARK: - SETTING UP CHART
     
     func barChartUpdate(){
         //bar chart code
@@ -66,9 +83,6 @@ class DashboardViewController: UIViewController {
         
         graphView.animate(xAxisDuration: 0.5)
         graphView.animate(yAxisDuration: 0.5)
-        
-        //        barChartView.leftAxis.enabled = false
-        //        barChartView.rightAxis.enabled = false
         
         graphView.notifyDataSetChanged()
         

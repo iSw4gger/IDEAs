@@ -17,6 +17,10 @@ import Charts
 class ApprovedResultsViewController: UIViewController {
     
     
+    
+    
+//MARK: - SETTING UP THE VARIABLES
+    
     //@IBOutlet weak var pieChartView: PieChartView!
     
     @IBOutlet weak var barChartView: BarChartView!
@@ -32,6 +36,13 @@ class ApprovedResultsViewController: UIViewController {
     var numberDenied = 0
     var numberApproved = 0
     
+    
+    
+    
+    
+    
+//MARK: - STANDARD VIEW DID LOAD
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "IDEA # \(ideaID) Results"
@@ -42,11 +53,17 @@ class ApprovedResultsViewController: UIViewController {
 
     }
     
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    
+    
+    
+    
+//MARK: - SETTING UP THE CHART
     
     func barChartUpdate(){
         //bar chart code
@@ -71,11 +88,10 @@ class ApprovedResultsViewController: UIViewController {
         barChartView.animate(xAxisDuration: 0.5)
         barChartView.animate(yAxisDuration: 0.5)
         
-//        barChartView.leftAxis.enabled = false
-//        barChartView.rightAxis.enabled = false
-        
         barChartView.notifyDataSetChanged()
 
+        
+        
     }
     
     
