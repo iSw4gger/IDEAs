@@ -135,6 +135,8 @@ class ActiveTableViewController: UITableViewController {
             self.activeIdeaTableView.reloadData()
             self.tableView.reloadData()
         }
+        self.activeIdeaTableView.reloadData()
+        self.tableView.reloadData()
     }
     
     

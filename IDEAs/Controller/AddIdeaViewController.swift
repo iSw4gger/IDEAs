@@ -56,22 +56,22 @@ class AddIdeaViewController: UIViewController {
         submitButtonOutlet.layer.cornerRadius = 15
         
         //erases the border of the text fields for a more clean look.
-        ideaTitleTextField.borderStyle = UITextBorderStyle.none
-        ideaIDTextField.borderStyle = UITextBorderStyle.none
-        briefIdeaDescription.borderStyle = UITextBorderStyle.none
+        ideaTitleTextField.borderStyle = UITextField.BorderStyle.none
+        ideaIDTextField.borderStyle = UITextField.BorderStyle.none
+        briefIdeaDescription.borderStyle = UITextField.BorderStyle.none
         
         //will initially hide the submit button until the ideaID text field is written to.
         submitButtonOutlet.isHidden = true
         
         
         //set the color of the image views.
-        ideaIDCheckIfTextOutlet.image = ideaIDCheckIfTextOutlet.image!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        ideaIDCheckIfTextOutlet.image = ideaIDCheckIfTextOutlet.image!.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         ideaIDCheckIfTextOutlet.tintColor = UIColor.flatMint()
 
-        ideaTitleCheckIfTextOutlet.image = ideaTitleCheckIfTextOutlet.image!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        ideaTitleCheckIfTextOutlet.image = ideaTitleCheckIfTextOutlet.image!.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         ideaTitleCheckIfTextOutlet.tintColor = UIColor.flatMint()
         
-        ideaDescCheckIfTextOutlet.image = ideaDescCheckIfTextOutlet.image!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        ideaDescCheckIfTextOutlet.image = ideaDescCheckIfTextOutlet.image!.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         ideaDescCheckIfTextOutlet.tintColor = UIColor.flatMint()
         
         //hide the image views initially.

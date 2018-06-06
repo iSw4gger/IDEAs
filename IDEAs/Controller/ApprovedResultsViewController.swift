@@ -9,7 +9,6 @@
 import UIKit
 import Spring
 import Firebase
-import SwiftCharts
 import FirebaseDatabase
 import FirebaseAuth
 import Charts
@@ -35,7 +34,7 @@ class ApprovedResultsViewController: UIViewController {
     var numApproverArray = [String]()
     var numberDenied = 0
     var numberApproved = 0
-    
+    @IBOutlet weak var ideaTitleLabel: UILabel!
     
     
     
@@ -48,7 +47,7 @@ class ApprovedResultsViewController: UIViewController {
         self.title = "IDEA # \(ideaID) Results"
 
         barChartUpdate()
-
+        ideaTitleLabel.text = ideaDesc
         //pieChartUpdate()
 
     }

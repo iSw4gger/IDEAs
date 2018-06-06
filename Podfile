@@ -17,7 +17,6 @@ target 'IDEAs' do
     pod 'AEAccordion'
     pod 'Spring'
     pod 'Charts'
-    pod 'SwiftCharts', '~> 0.6.1'
 
 end
 

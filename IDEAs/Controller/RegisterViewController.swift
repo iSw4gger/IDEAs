@@ -23,7 +23,7 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
     @IBOutlet weak var backToLoginButton: UIButton!
-    
+    var domainCheck = ""
     
     
     
@@ -76,6 +76,22 @@ class RegisterViewController: UIViewController {
     @IBAction func registerButtonPressed(_ sender: Any) {
         
         SVProgressHUD.show()
+        
+        if let email = registerEmailAddressTextField.text{
+            if let dotRange = email.range(of: "@") {
+                domainCheck = String(email[dotRange.upperBound...])
+            }
+        }
+        
+        
+        if domainCheck != "stlukeshealth.org"{
+            SVProgressHUD.showError(withStatus: "You must use an stlukeshealth.org email address")
+            SVProgressHUD.dismiss(withDelay: 2.0)
+            registerEmailAddressTextField.text = ""
+            print(domainCheck)
+            return
+        }
+
  
         Auth.auth().createUser(withEmail: registerEmailAddressTextField.text!, password: registerPasswordTextField.text!) { (user, error) in
             //once authentification is completed and callback completed. This is referred to as a 'completion handler', because once the process of authentication the user, it notifies the user that the process is 'completed'

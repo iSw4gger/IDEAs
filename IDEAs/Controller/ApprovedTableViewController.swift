@@ -12,7 +12,7 @@ import FirebaseDatabase
 import FirebaseAuth
 
 
-class ApprovedTableViewController: UITableViewController {
+class ApprovedTableViewController: UITableViewController, UISearchBarDelegate {
 
     
 //MARK: - SETUP VARIABLES
@@ -25,8 +25,13 @@ class ApprovedTableViewController: UITableViewController {
     var ideaArray = [Idea]()
     var numberApproved: Int = 0
     var numberDenied: Int = 0
-    let searchController = UISearchController(searchResultsController: nil)
-    var searchArray = [Idea]()
+    var currentIdeaArray = [Idea]()
+
+    
+    var isSearching = false
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+
     
     
     
@@ -35,11 +40,10 @@ class ApprovedTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Approved IDEAs"
-        
-        
 
         //method call to tap into database to get the values.
         retrieveData()
+
 
     }
 
@@ -49,13 +53,25 @@ class ApprovedTableViewController: UITableViewController {
 
     
     
+    private func setUpSearchBar(){
+        searchBar.delegate = self
+    }
     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+
+
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        
+    }
     
     
     
 //MARK: - SETTING UP THE TABLE VIEW
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return approvedArray.count
     }
     
@@ -68,7 +84,9 @@ class ApprovedTableViewController: UITableViewController {
         cell.approvedIdeaIDOutlet.text = approvedArray[indexPath.row].ideaID
         cell.approvedIdeaTitleOutlet.text = approvedArray[indexPath.row].ideaTitle
         
+
         return cell
+        
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -126,6 +144,7 @@ class ApprovedTableViewController: UITableViewController {
                 self.deniedArray.append(idea)//denied IDEAs
             }
 
+            self.currentIdeaArray = self.approvedArray
             //required for this table to populate with this data.
             self.tableView.reloadData()
 

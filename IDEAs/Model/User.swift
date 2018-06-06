@@ -18,12 +18,14 @@ class User{
     var lastName : String = ""
     var firstName : String = ""
     
-    init() {
-        isAdmin = checkIfAdmin()
-    }
+//    init() {
+//        isAdmin = checkIfAdmin()
+//    }
 
-    func checkIfAdmin() -> Bool{
+    func checkIfAdmin(){
 
+        let defaults = UserDefaults.standard
+        
         DispatchQueue.main.async {
             
         
@@ -40,27 +42,33 @@ class User{
             ideaDB.observe(.childAdded) { (snapshot) in
                 
                 
-                //.value sends back an object type of 'any', so we have to cast it to dictionary.
                 let snapShotValue = snapshot.value as! Dictionary<String, Any>
-                //let email = snapShotValue["Email"]!
                 let admin = snapShotValue["Admin"]!
-                //let firstName = snapShotValue["First Name"]
-                //let lastName = snapShotValue["Last Name"]
                 
-                //self.emailAddress = email as! String
                 self.isAdmin = admin as! Bool
-                //self.firstName = firstName as! String
-                //self.lastName = lastName as! String
                 
                 tempAdmin = self.isAdmin
                 
+                if tempAdmin == true{
+                    defaults.set(true, forKey: "isAdmin")
+                }
+                
                 print("this is from the User class, 'tempAdmin': \(tempAdmin)")
                 print("this is from the User class, global 'isAdmin': \(self.isAdmin)")
-                    }
                 }
             }
-        return isAdmin
-        
+            if self.isAdmin == true{
+                defaults.set(true, forKey: "isAdmin")
+            }
+            
+            if self.isAdmin == true{
+                defaults.set(true, forKey: "isAdmin")
+            }
+        }
+        if isAdmin == true{
+            defaults.set(true, forKey: "isAdmin")
+        }
     }
-    
+
 }
+
