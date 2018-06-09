@@ -12,8 +12,10 @@ import FirebaseDatabase
 import FirebaseAuth
 
 
-class ApprovedTableViewController: UITableViewController, UISearchBarDelegate {
-
+class ApprovedTableViewController: UITableViewController, UISearchBarDelegate, UISearchResultsUpdating{
+    
+    var filteredIdeas = [Idea]()
+    let searchController = UISearchController(searchResultsController: nil)
     
 //MARK: - SETUP VARIABLES
 
@@ -26,10 +28,8 @@ class ApprovedTableViewController: UITableViewController, UISearchBarDelegate {
     var numberApproved: Int = 0
     var numberDenied: Int = 0
     var currentIdeaArray = [Idea]()
+    var approvedIdeaCount = 0
 
-    
-    var isSearching = false
-    @IBOutlet weak var searchBar: UISearchBar!
     
 
     
@@ -39,7 +39,20 @@ class ApprovedTableViewController: UITableViewController, UISearchBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+ 
+        
         self.title = "Approved IDEAs"
+
+        
+        //setup search bar func.
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = ""
+        searchController.searchBar.barStyle = .default
+        searchController.searchBar.searchBarStyle = .minimal
+        tableView.tableHeaderView = searchController.searchBar
+        definesPresentationContext = true
 
         //method call to tap into database to get the values.
         retrieveData()
@@ -53,26 +66,33 @@ class ApprovedTableViewController: UITableViewController, UISearchBarDelegate {
 
     
     
-    private func setUpSearchBar(){
-        searchBar.delegate = self
-    }
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-
-
-    }
+//MARK: - SETUP SEARCH FUNC
     
-    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty{
+            filteredIdeas = approvedArray.filter { idea in
+                return idea.ideaID.lowercased().contains(searchController.searchBar.text!.lowercased())
+            }
+        }else if let searchText2 = searchController.searchBar.text, !searchText2.isEmpty{
+            filteredIdeas = approvedArray.filter {idea in
+                return idea.ideaDescription.lowercased().contains(searchController.searchBar.text!.lowercased())
+            }
+        }else{
+            filteredIdeas = approvedArray
+        }
+        
+        tableView.reloadData()
         
     }
-    
+
     
     
 //MARK: - SETTING UP THE TABLE VIEW
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return approvedArray.count
+        return filteredIdeas.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -81,8 +101,8 @@ class ApprovedTableViewController: UITableViewController, UISearchBarDelegate {
         //default functions to setup table view. Use this to set the values of the labels from the cell.
         let cell = tableView.dequeueReusableCell(withIdentifier: "approvedTableViewCell", for: indexPath) as! ApprovedTableViewCell
         //assign array values to the cells.
-        cell.approvedIdeaIDOutlet.text = approvedArray[indexPath.row].ideaID
-        cell.approvedIdeaTitleOutlet.text = approvedArray[indexPath.row].ideaTitle
+        cell.approvedIdeaIDOutlet.text = filteredIdeas[indexPath.row].ideaID
+        cell.approvedIdeaTitleOutlet.text = filteredIdeas[indexPath.row].ideaTitle
         
 
         return cell
@@ -93,12 +113,11 @@ class ApprovedTableViewController: UITableViewController, UISearchBarDelegate {
         //makes the cell unhighlighted after selected
         tableView.deselectRow(at: indexPath, animated: true)
         
-        ideaTitle = approvedArray[indexPath.row].ideaTitle
-        ideaID = Int(approvedArray[indexPath.row].ideaID)!
-        ideaDesc = approvedArray[indexPath.row].ideaDescription
-        numberApproved = approvedArray[indexPath.row].numberApproved
-        numberDenied = approvedArray[indexPath.row].numberDenied
-        
+        ideaTitle = filteredIdeas[indexPath.row].ideaTitle
+        ideaID = Int(filteredIdeas[indexPath.row].ideaID)!
+        ideaDesc = filteredIdeas[indexPath.row].ideaDescription
+        numberApproved = filteredIdeas[indexPath.row].numberApproved
+        numberDenied = filteredIdeas[indexPath.row].numberDenied
         
         performSegue(withIdentifier: "segueToApprovedResults", sender: self)
 
@@ -140,11 +159,13 @@ class ApprovedTableViewController: UITableViewController, UISearchBarDelegate {
             
             if idea.isApproved == true{
                 self.approvedArray.append(idea)//approved IDEAs
+                self.filteredIdeas.append(idea)
             }else{
                 self.deniedArray.append(idea)//denied IDEAs
             }
 
             self.currentIdeaArray = self.approvedArray
+            self.filteredIdeas = self.approvedArray
             //required for this table to populate with this data.
             self.tableView.reloadData()
 

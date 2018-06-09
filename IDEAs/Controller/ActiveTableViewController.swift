@@ -24,10 +24,11 @@ class ActiveTableViewController: UITableViewController {
     @IBOutlet weak var graphButton: SpringButton!
     @IBOutlet weak var logoutButtonOutlet: UIBarButtonItem!
     
+    var prevID = ""
     var approvedArray = [Idea]()
     var deniedArray = [Idea]()
     var ideaArray : [Idea] = [Idea]()
-    
+    let user = User()
     //Global variables to store the date and create the sections
     var dateArray = [String]()
     var stringDate : String = ""
@@ -49,42 +50,53 @@ class ActiveTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        retrieveData()
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-
-        //admin determined in the login VC. will need to add to the register VC??
-        addIdeaButton.isEnabled = false
-        if isAdmin == true{
-            addIdeaButton.isEnabled = true
-        }
-        approveButton.layer.cornerRadius = 15
-        deniedButton.layer.cornerRadius = 15
         approvedArray.removeAll()
         deniedArray.removeAll()
+        retrieveData()
+        DispatchQueue.main.async {
+            //self.retrieveData()
+            self.user.checkIfAdmin(completion: self.completeAdminAccess)
+            print("In dispatch section ActiveVC")
+
+        }
+        
+        
+        let defaults = UserDefaults.standard
+
+        print("This is from activevc \(defaults.bool(forKey: "isAdmin"))")
+        
+        approveButton.layer.cornerRadius = 15
+        deniedButton.layer.cornerRadius = 15
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        retrieveData()
-        approvedArray.removeAll()
-        deniedArray.removeAll()
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-    
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+//        approvedArray.removeAll()
+//        deniedArray.removeAll()
 
-        //NEED MORE TESTING TO SEE WHY ACTIVE IDEAS DUPLICATE
-        tableView.reloadData()
-        activeIdeaTableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+            self.user.checkIfAdmin(completion: self.completeAdminAccess)
+        }
     }
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(true)
+//        DispatchQueue.main.async {
+//            self.retrieveData()
+//            self.tableView.reloadData()
+//        }
+//        approvedArray.removeAll()
+//        deniedArray.removeAll()
+//
+//        DispatchQueue.main.async {
+//            self.tableView.reloadData()
+//            self.user.checkIfAdmin(completion: self.completeAdminAccess)
+//        }
+//
+//        //NEED MORE TESTING TO SEE WHY ACTIVE IDEAS DUPLICATE
+//
+//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -101,10 +113,13 @@ class ActiveTableViewController: UITableViewController {
 //MARK: RETRIEVING AND STORING DATA
     
     func retrieveData(){
-        ideaArray.removeAll()
+        
+        //ideaArray.removeAll()
+
 
         let ideaDB = Database.database().reference().child("ActiveIdeaDB")
         ideaDB.observe(.childAdded) { (snapshot) in
+
             //.value sends back an object type of 'any', so we have to cast it to dictionary.
             let snapShotValue = snapshot.value as! Dictionary<String, Any>
             let iD = snapShotValue["ID"]
@@ -120,13 +135,22 @@ class ActiveTableViewController: UITableViewController {
             idea.ideaDescription = description as! String
             idea.ideaID = iD! as! String
             idea.ideaTitle = title as! String
-            self.stringDate = date as! String
+            idea.addDate = date as! String
 
             //to be used for sections if i can
-            self.dateArray.append(self.stringDate)
+//            let sections: NSSet = NSSet(array: self.dateArray)
+//            if !sections.contains(idea.addDate) {
+//                self.dateArray.append(idea.addDate)
+//            }
+            
+            //self.dateArray.append(self.stringDate)
 
-            if idea.isActive == true{
+            
+            print("Printing prevID \(self.prevID)")
+            
+            if idea.isActive == true && idea.ideaID != self.prevID{
                 self.ideaArray.append(idea)
+                self.prevID = idea.ideaID
             }else if idea.isApproved == true{
                 self.approvedArray.append(idea)
             }else if idea.isApproved == false{
@@ -140,7 +164,17 @@ class ActiveTableViewController: UITableViewController {
     }
     
     
-    
+    //part of completion block in the User class.
+    //retrieves data to determine if user is an admin or not.
+    func completeAdminAccess(isAdmin: Bool){
+        let defaults = UserDefaults.standard
+        defaults.set(isAdmin, forKey: "isAdmin")
+        if isAdmin == true{
+            addIdeaButton.isEnabled = true
+        }else{
+            addIdeaButton.isEnabled = false
+        }
+    }
     
     
     
@@ -148,10 +182,13 @@ class ActiveTableViewController: UITableViewController {
     
     
 //MARK: -  SET UP TABLE VIEW
-    
+
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ideaArray.count
-    }
+        
+            return ideaArray.count
+        
+        }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //default functions to setup table view. Use this to set the values of the labels from the cell.
@@ -163,6 +200,7 @@ class ActiveTableViewController: UITableViewController {
             cell.ideaIDCellLabel.text = ideaArray[indexPath.row].ideaID
             cell.ideaTitleCellLabel.text = ideaArray[indexPath.row].ideaTitle
         }
+        
         return cell
     }
     
@@ -228,6 +266,11 @@ class ActiveTableViewController: UITableViewController {
             vc3.numberDenied = deniedArray.count
             print("This is from active prepare for segue \(approvedArray.count) and \(deniedArray.count)")
         }
+        
+        if segue.identifier == "approvedSegue"{
+            let vc4 = segue.destination as! ApprovedTableViewController
+            vc4.approvedIdeaCount = approvedArray.count
+        }
     }
     
     
@@ -241,13 +284,12 @@ class ActiveTableViewController: UITableViewController {
 //MARK: - LOGOUT FUNCTIONALITY
     
     @IBAction func logoutButtonPressed(_ sender: Any) {
-        
         do{
             try Auth.auth().signOut()
             //the view controllers are embedded in the navigation controller. This gives you the ability to go back, swipe to go back, etc.
             //takes you back to the welcome screen
             navigationController?.popToRootViewController(animated: true)
-            self.dismiss(animated: true, completion: nil)
+            self.performSegue(withIdentifier: "backToLogin", sender: self)
         }
         catch{
             print("error, there was a problem")

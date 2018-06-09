@@ -17,5 +17,6 @@ class Idea{
     var isApproved : Bool = false
     var numberApproved : Int = 0
     var numberDenied : Int = 0
+    var addDate = ""
     
 }

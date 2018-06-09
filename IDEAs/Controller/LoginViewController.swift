@@ -34,7 +34,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.navigationItem.hidesBackButton = true
         //setup remember me functionality
         rememberMeSwitch.addTarget(self, action: #selector(self.stateChanged), for: .valueChanged)
         
@@ -137,15 +137,7 @@ class LoginViewController: UIViewController {
         return doesExist
     }
     
-    func checkAdminUserDefault(){
-        user.checkIfAdmin()
-        let defaults = UserDefaults.standard
-        if defaults.bool(forKey: "isAdmin") == true{
-            isAdmin = true
-            print("From login checkAdmin \(isAdmin)")
-        }
-    }
-    
+
     
     
     
@@ -186,7 +178,6 @@ class LoginViewController: UIViewController {
                 SVProgressHUD.dismiss()
                 self.performSegue(withIdentifier: "goToIdeas", sender: self)
                 //isAdmin = self.user.checkIfAdmin()
-                self.checkAdminUserDefault()
                 print("This is from login class isAdmin \(isAdmin)")
             }
         }

@@ -22,15 +22,13 @@ class User{
 //        isAdmin = checkIfAdmin()
 //    }
 
-    func checkIfAdmin(){
+    func checkIfAdmin(completion: @escaping  (Bool)-> Void){
 
-        let defaults = UserDefaults.standard
-        
-        DispatchQueue.main.async {
-            
-        
         var tempAdmin = false
         let currentUser = Auth.auth().currentUser
+
+        DispatchQueue.main.async {
+
         
         if currentUser != nil{
             var email = (currentUser?.email)!
@@ -38,37 +36,22 @@ class User{
                 email.removeSubrange(dotRange.lowerBound..<email.endIndex)
             }
             
-            let ideaDB = Database.database().reference().child("UsersDB")
-            ideaDB.observe(.childAdded) { (snapshot) in
+            let ideaDB = Database.database().reference().child("UsersDB").child(email)
+            ideaDB.observe(.value) { (snapshot) in
                 
-                
+                print(snapshot)
                 let snapShotValue = snapshot.value as! Dictionary<String, Any>
                 let admin = snapShotValue["Admin"]!
                 
                 self.isAdmin = admin as! Bool
-                
+
                 tempAdmin = self.isAdmin
-                
-                if tempAdmin == true{
-                    defaults.set(true, forKey: "isAdmin")
-                }
-                
+        
                 print("this is from the User class, 'tempAdmin': \(tempAdmin)")
                 print("this is from the User class, global 'isAdmin': \(self.isAdmin)")
+                completion(tempAdmin)
                 }
             }
-            if self.isAdmin == true{
-                defaults.set(true, forKey: "isAdmin")
-            }
-            
-            if self.isAdmin == true{
-                defaults.set(true, forKey: "isAdmin")
-            }
-        }
-        if isAdmin == true{
-            defaults.set(true, forKey: "isAdmin")
         }
     }
-
 }
-

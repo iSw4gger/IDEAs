@@ -187,7 +187,12 @@ class AddIdeaViewController: UIViewController {
     }
     
     
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "backToActive"{
+            let vc = segue.destination as! ActiveTableViewController
+            vc.ideaArray.removeAll()
+        }
+    }
     
     
 //MARK: - GETTING TIME STAMP WHEN ADD IDEA

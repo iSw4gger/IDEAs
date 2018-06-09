@@ -130,20 +130,21 @@ class VotingViewController: UIViewController {
         
 //        approveButton.animation = "fall"
 //        approveButton.animate()
+        //checkApprovalStatus()
 
-        // grab a reference of the master DB + child DB and update those points within the ideaID
+//        // grab a reference of the master DB + child DB and update those points within the ideaID
         let ref = Database.database().reference().child("ActiveIdeaDB/\(ideaID)")
-
-        //switching it to approved. May need to update logic
-        ref.updateChildValues(["Approved" : true])
-        
-        //switching to active. May need to update logic here.
-        ref.updateChildValues(["Active" : false])
-        
-        //TODO: - may need to get rid of this
+//
+//        //switching it to approved. May need to update logic
+//        ref.updateChildValues(["Approved" : true])
+//
+//        //switching to active. May need to update logic here.
+//        ref.updateChildValues(["Active" : false])
+//
+//        //TODO: - may need to get rid of this
         approvedDataEntry.value = approvedDataEntry.value + 1.0
         ref.updateChildValues(["Number Approved" : approvedDataEntry.value])
-        
+//
         
         //created a dictionary to store the values in the database. Each of these will be separate data points. They come from what the user typed in, plus the original values stored in the Idea class.
         let ideaDictionary: [String:String] = [email : email]
@@ -166,8 +167,6 @@ class VotingViewController: UIViewController {
     
     @IBAction func denyButtonPressed(_ sender: Any) {
         
-        denyButton.animation = "wobble"
-        denyButton.animate()
 
         let ref = Database.database().reference().child("ActiveIdeaDB/\(ideaID)")
         ref.updateChildValues(["Approved" : false])
@@ -235,6 +234,15 @@ class VotingViewController: UIViewController {
                 self.approvedDataEntry.value = appNum
                 print("This is in updateApproveData" + String(self.approvedDataEntry.value))
                 self.barChartUpdate()
+                
+                //logic that makes the idea approved.
+                if self.approvedDataEntry.value >= 7.0{
+                    SVProgressHUD.showSuccess(withStatus: "This IDEA was approved.")
+                    SVProgressHUD.setBorderColor(UIColor.flatMint())
+                    ref.updateChildValues(["Approved" : true])
+                    //switching to active. May need to update logic here.
+                    ref.updateChildValues(["Active" : false])
+                }
                 //self.updateChartData()
             })
         }
@@ -374,7 +382,23 @@ class VotingViewController: UIViewController {
         
     }
     
-
+    func checkApprovalStatus(){
+        print(approvedDataEntry.value)
+        let ref = Database.database().reference().child("ActiveIdeaDB/\(ideaID)")
+        if approvedDataEntry.value >= 7{
+            print("inside loop")
+            //switching it to approved. May need to update logic
+            ref.updateChildValues(["Approved" : true])
+            
+            //switching to active. May need to update logic here.
+            ref.updateChildValues(["Active" : false])
+            
+            //TODO: - may need to get rid of this
+            SVProgressHUD.showSuccess(withStatus: "This IDEA has been approved.")
+        }
+        ref.updateChildValues(["Number Approved" : approvedDataEntry.value])
+        updateApproveData()
+    }
     
     
     
@@ -385,8 +409,10 @@ class VotingViewController: UIViewController {
         //this is necessary to remove the rows that were switched from active to inactive. Otherwise, still appears in the active VC
         if segue.identifier == "segueToVote"{
             let vc = segue.destination as! ActiveTableViewController
+            vc.ideaArray.removeAll()
             vc.retrieveData()
-            
+            vc.activeIdeaTableView.reloadData()
+            vc.tableView.reloadData()
         }
     }
     
