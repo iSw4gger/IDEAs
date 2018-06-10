@@ -79,16 +79,24 @@ class ApprovedResultsViewController: UIViewController {
         
         barChartView.drawGridBackgroundEnabled = false
         barChartView.gridBackgroundColor = UIColor.white
-        barChartView.xAxis.labelTextColor = UIColor.white
+        barChartView.xAxis.labelTextColor = UIColor.clear
+        
+        barChartView.leftAxis.labelFont = UIFont.boldSystemFont(ofSize: 12)
+        barChartView.leftAxis.labelTextColor = UIColor.flatPink()
 
         barChartView.xAxis.drawAxisLineEnabled = false
-        barChartView.xAxis.axisLineColor = UIColor.white
+        barChartView.xAxis.axisLineColor = UIColor.clear
 
         barChartView.animate(xAxisDuration: 0.5)
         barChartView.animate(yAxisDuration: 0.5)
         
         barChartView.notifyDataSetChanged()
 
+        //set min and max graph size
+        barChartView.rightAxis.axisMinimum = 0
+        barChartView.rightAxis.axisMaximum = 10
+        barChartView.leftAxis.axisMinimum = 0
+        barChartView.leftAxis.axisMaximum = 10
         
         
     }

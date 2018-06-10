@@ -29,6 +29,7 @@ class DeniedTableViewController: UITableViewController, UISearchResultsUpdating 
         super.viewDidLoad()
         self.title = "Denied IDEAs"
         
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.flatPurple()]
         
         //setup search bar func.
         searchController.searchResultsUpdater = self
@@ -37,7 +38,8 @@ class DeniedTableViewController: UITableViewController, UISearchResultsUpdating 
         searchController.searchBar.placeholder = ""
         searchController.searchBar.barStyle = .default
         searchController.searchBar.searchBarStyle = .minimal
-        tableView.tableHeaderView = searchController.searchBar
+        searchController.searchBar.keyboardAppearance = .dark
+        navigationItem.searchController = searchController
         definesPresentationContext = true
         
         //method call to tap into database to get the values.
@@ -61,6 +63,10 @@ class DeniedTableViewController: UITableViewController, UISearchResultsUpdating 
         cell.deniedIDCellLabel.text = filteredIdeas[indexPath.row].ideaID
         cell.deniedTitleCellLabel.text = filteredIdeas[indexPath.row].ideaTitle
         
+        //changes the background color when selected.
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.flatPurple()
+        cell.selectedBackgroundView = backgroundView
         return cell
     }
     

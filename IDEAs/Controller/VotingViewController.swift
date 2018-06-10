@@ -106,6 +106,8 @@ class VotingViewController: UIViewController {
         
         //storing the entries in an array that was established above.
         numberOfVotesDataEntries = [approvedDataEntry, deniedDataEntry]
+        
+        //these two methods are causing app to crash if you go to vote, then go back and try to delete the IDEA.
         updateApproveData()
         updateDenialData()
         updateApprovalPerson()
@@ -364,10 +366,13 @@ class VotingViewController: UIViewController {
         
         barChartView.drawGridBackgroundEnabled = false
         barChartView.gridBackgroundColor = UIColor.white
-        barChartView.xAxis.labelTextColor = UIColor.white
+        barChartView.xAxis.labelTextColor = UIColor.clear
+
+        
         
         barChartView.xAxis.drawAxisLineEnabled = false
-        barChartView.xAxis.axisLineColor = UIColor.white
+        barChartView.leftAxis.labelFont = UIFont.boldSystemFont(ofSize: 12)
+        barChartView.leftAxis.labelTextColor = UIColor.flatPink()
         
         barChartView.animate(xAxisDuration: 0.5)
         barChartView.animate(yAxisDuration: 0.5)
@@ -395,6 +400,7 @@ class VotingViewController: UIViewController {
             
             //TODO: - may need to get rid of this
             SVProgressHUD.showSuccess(withStatus: "This IDEA has been approved.")
+
         }
         ref.updateChildValues(["Number Approved" : approvedDataEntry.value])
         updateApproveData()

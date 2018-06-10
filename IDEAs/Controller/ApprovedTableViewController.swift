@@ -40,6 +40,7 @@ class ApprovedTableViewController: UITableViewController, UISearchBarDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
  
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.flatMint()]
         
         self.title = "Approved IDEAs"
 
@@ -49,9 +50,12 @@ class ApprovedTableViewController: UITableViewController, UISearchBarDelegate, U
         searchController.dimsBackgroundDuringPresentation = false
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = ""
-        searchController.searchBar.barStyle = .default
+        //searchController.searchBar.barStyle = .default
+        searchController.searchBar.tintColor = UIColor.lightGray
         searchController.searchBar.searchBarStyle = .minimal
-        tableView.tableHeaderView = searchController.searchBar
+        searchController.searchBar.keyboardAppearance = .dark
+        
+        navigationItem.searchController = searchController
         definesPresentationContext = true
 
         //method call to tap into database to get the values.
@@ -104,7 +108,11 @@ class ApprovedTableViewController: UITableViewController, UISearchBarDelegate, U
         cell.approvedIdeaIDOutlet.text = filteredIdeas[indexPath.row].ideaID
         cell.approvedIdeaTitleOutlet.text = filteredIdeas[indexPath.row].ideaTitle
         
-
+        //changes the background color when selected.
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.flatMint()
+        cell.selectedBackgroundView = backgroundView
+        
         return cell
         
     }

@@ -74,12 +74,17 @@ class DashboardViewController: UIViewController {
         let colors = [UIColor.flatMint(), UIColor.flatPurple()]
         dataSet.colors = colors as! [NSUIColor]
         
+        dataSet.valueFont = UIFont(name: "Verdana", size: 14)!
         graphView.drawGridBackgroundEnabled = false
         graphView.gridBackgroundColor = UIColor.white
-        graphView.xAxis.labelTextColor = UIColor.white
+        graphView.xAxis.labelTextColor = UIColor.clear
+        
+        graphView.leftAxis.labelFont = UIFont.boldSystemFont(ofSize: 12)
+        graphView.leftAxis.labelTextColor = UIColor.flatPink()
         
         graphView.xAxis.drawAxisLineEnabled = false
-        graphView.xAxis.axisLineColor = UIColor.white
+        graphView.xAxis.axisLineColor = UIColor.clear
+        
         
         graphView.animate(xAxisDuration: 0.5)
         graphView.animate(yAxisDuration: 0.5)

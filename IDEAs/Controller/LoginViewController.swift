@@ -34,6 +34,8 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        navigationController?.navigationBar.isHidden = true
         self.navigationItem.hidesBackButton = true
         //setup remember me functionality
         rememberMeSwitch.addTarget(self, action: #selector(self.stateChanged), for: .valueChanged)

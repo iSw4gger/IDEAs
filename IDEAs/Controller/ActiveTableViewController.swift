@@ -13,17 +13,22 @@ import FirebaseAuth
 import FirebaseDatabase
 import SVProgressHUD
 
-class ActiveTableViewController: UITableViewController {
+class ActiveTableViewController: UITableViewController, UISearchResultsUpdating {
+    
+    
     
 //MARK: - ADD VARIABLES
 
     @IBOutlet weak var addIdeaButton: UIBarButtonItem!
-    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var approveButton: SpringButton!
     @IBOutlet weak var deniedButton: SpringButton!
     @IBOutlet weak var graphButton: SpringButton!
     @IBOutlet weak var logoutButtonOutlet: UIBarButtonItem!
     
+    let searchController = UISearchController(searchResultsController: nil)
+
+    var allIdeasArray = [Idea]()
+    var filteredIdeas = [Idea]()
     var prevID = ""
     var approvedArray = [Idea]()
     var deniedArray = [Idea]()
@@ -50,6 +55,7 @@ class ActiveTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
         approvedArray.removeAll()
         deniedArray.removeAll()
         retrieveData()
@@ -59,6 +65,19 @@ class ActiveTableViewController: UITableViewController {
             print("In dispatch section ActiveVC")
 
         }
+        
+        //setup search bar functionality.
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = ""
+        //searchController.searchBar.barStyle = .default
+        searchController.searchBar.tintColor = UIColor.lightGray
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.keyboardAppearance = .dark
+        navigationItem.searchController = searchController
+
+        definesPresentationContext = true
         
         
         let defaults = UserDefaults.standard
@@ -73,12 +92,13 @@ class ActiveTableViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
 //        approvedArray.removeAll()
 //        deniedArray.removeAll()
-
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
         DispatchQueue.main.async {
             self.tableView.reloadData()
             self.user.checkIfAdmin(completion: self.completeAdminAccess)
         }
     }
+    
     
 //    override func viewWillAppear(_ animated: Bool) {
 //        super.viewWillAppear(true)
@@ -104,7 +124,27 @@ class ActiveTableViewController: UITableViewController {
     }
     
     
+
     
+    
+//MARK: - SEARCH BAR FUNC
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty{
+            filteredIdeas = allIdeasArray.filter { idea in
+                return idea.ideaID.lowercased().contains(searchController.searchBar.text!.lowercased())
+            }
+        }else if let searchText2 = searchController.searchBar.text, !searchText2.isEmpty{
+            filteredIdeas = allIdeasArray.filter {idea in
+                return idea.ideaDescription.lowercased().contains(searchController.searchBar.text!.lowercased())
+            }
+        }else{
+            filteredIdeas = approvedArray
+        }
+        
+        tableView.reloadData()
+    }
     
     
     
@@ -112,9 +152,7 @@ class ActiveTableViewController: UITableViewController {
     
 //MARK: RETRIEVING AND STORING DATA
     
-    func retrieveData(){
-        
-        //ideaArray.removeAll()
+    @objc func retrieveData(){
 
 
         let ideaDB = Database.database().reference().child("ActiveIdeaDB")
@@ -148,6 +186,9 @@ class ActiveTableViewController: UITableViewController {
             
             print("Printing prevID \(self.prevID)")
             
+            self.allIdeasArray.append(idea)
+
+            
             if idea.isActive == true && idea.ideaID != self.prevID{
                 self.ideaArray.append(idea)
                 self.prevID = idea.ideaID
@@ -159,8 +200,8 @@ class ActiveTableViewController: UITableViewController {
             self.activeIdeaTableView.reloadData()
             self.tableView.reloadData()
         }
-        self.activeIdeaTableView.reloadData()
-        self.tableView.reloadData()
+//        self.activeIdeaTableView.reloadData()
+//        self.tableView.reloadData()
     }
     
     
@@ -201,6 +242,10 @@ class ActiveTableViewController: UITableViewController {
             cell.ideaTitleCellLabel.text = ideaArray[indexPath.row].ideaTitle
         }
         
+        //changes the background color when selected.
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.flatPink()
+        cell.selectedBackgroundView = backgroundView
         return cell
     }
     
@@ -227,6 +272,7 @@ class ActiveTableViewController: UITableViewController {
         let edit = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in
             self.ideaID = Int(self.ideaArray[indexPath.row].ideaID)!
             self.performSegue(withIdentifier: "goToAdd", sender: self)
+            
         }
         
         edit.backgroundColor = UIColor.flatSkyBlue()
