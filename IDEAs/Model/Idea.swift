@@ -18,5 +18,6 @@ class Idea{
     var numberApproved : Int = 0
     var numberDenied : Int = 0
     var addDate = ""
+    var deferred = false
     
 }

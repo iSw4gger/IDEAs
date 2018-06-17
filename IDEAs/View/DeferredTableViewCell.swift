@@ -1,22 +1,25 @@
 //
-//  ApprovedTableViewCell.swift
+//  DeferredTableViewCell.swift
 //  IDEAs
 //
-//  Created by Jared Boynton on 5/28/18.
+//  Created by Jared Boynton on 6/11/18.
 //  Copyright © 2018 Jared Boynton. All rights reserved.
 //
 
 import UIKit
 
-class ApprovedTableViewCell: UITableViewCell {
+class DeferredTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var approvedIdeaIDOutlet: UILabel!
     
-    @IBOutlet weak var approvedIdeaTitleOutlet: UILabel!
+    @IBOutlet weak var deferredIdeaIDOutlet: UILabel!
     
-    @IBOutlet weak var approvedDescriptionLabel: UILabel!
+    @IBOutlet weak var deferredIdeaTitleOutlet: UILabel!
     
-    @IBOutlet weak var approvedDateLabel: UILabel!
+    @IBOutlet weak var deferredDescriptionLabel: UILabel!
+    
+    @IBOutlet weak var deferredDateLabel: UILabel!
+    
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

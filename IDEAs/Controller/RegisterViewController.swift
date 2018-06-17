@@ -35,6 +35,21 @@ class RegisterViewController: UIViewController {
         super.viewDidLoad()
         registerButton.layer.cornerRadius = 15
         
+        //make keyboards dark color
+        registerEmailAddressTextField.keyboardAppearance = .dark
+        registerPasswordTextField.keyboardAppearance = .dark
+        confirmPasswordTextField.keyboardAppearance = .dark
+        firstNameTextField.keyboardAppearance = .dark
+        lastNameTextField.keyboardAppearance = .dark
+        
+        //set placeholder colors
+        
+        registerEmailAddressTextField.attributedPlaceholder = NSAttributedString(string: "Email Address", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+        registerPasswordTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+        confirmPasswordTextField.attributedPlaceholder = NSAttributedString(string: "Confirm Password", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+        firstNameTextField.attributedPlaceholder = NSAttributedString(string: "First Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+        lastNameTextField.attributedPlaceholder = NSAttributedString(string: "Last Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+        
         //functionality to let the user click away from keyboard and onto screen to dismiss keyboard.
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         view.addGestureRecognizer(tapGesture)
@@ -99,9 +114,10 @@ class RegisterViewController: UIViewController {
                 //ex. will contain error if didn't adhere to rules of ".com" - email
                 //error is not null, therefore error exists
                 SVProgressHUD.dismiss()
-                SVProgressHUD.showError(withStatus: "Cannot leave the fields blank.")
+                SVProgressHUD.showError(withStatus: "Error.")
                 SVProgressHUD.dismiss(withDelay: 0.5)
                 print(error!)
+                return
             }
             else{
                 //success
@@ -126,7 +142,7 @@ class RegisterViewController: UIViewController {
         let ideaDB = Database.database().reference().child("UsersDB")
         
         //created a dictionary to store the values in the database. Each of these will be separate data points. They come from what the user typed in, plus the original values stored in the Idea class.
-        let ideaDictionary: [String:Any] = ["Email": registerEmailAddressTextField.text!, "First Name": firstNameTextField.text!, "Last Name": lastNameTextField.text!, "Admin": false]
+        let ideaDictionary: [String:Any] = ["Email": registerEmailAddressTextField.text!, "First Name": firstNameTextField.text!, "Last Name": lastNameTextField.text!, "Admin": false, "Is Active": true]
         
         var email = registerEmailAddressTextField.text!
         if let dotRange = email.range(of: "@") {

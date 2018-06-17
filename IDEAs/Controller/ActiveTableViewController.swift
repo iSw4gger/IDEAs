@@ -13,17 +13,22 @@ import FirebaseAuth
 import FirebaseDatabase
 import SVProgressHUD
 
-class ActiveTableViewController: UITableViewController {
+class ActiveTableViewController: UITableViewController, UISearchResultsUpdating {
+    
     
 //MARK: - ADD VARIABLES
 
     @IBOutlet weak var addIdeaButton: UIBarButtonItem!
-    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var approveButton: SpringButton!
     @IBOutlet weak var deniedButton: SpringButton!
     @IBOutlet weak var graphButton: SpringButton!
     @IBOutlet weak var logoutButtonOutlet: UIBarButtonItem!
+    @IBOutlet weak var deferButton: SpringButton!
     
+    let searchController = UISearchController(searchResultsController: nil)
+    
+    var allIdeasArray = [Idea]()
+    var filteredIdeas = [Idea]()
     var prevID = ""
     var approvedArray = [Idea]()
     var deniedArray = [Idea]()
@@ -32,6 +37,8 @@ class ActiveTableViewController: UITableViewController {
     //Global variables to store the date and create the sections
     var dateArray = [String]()
     var stringDate : String = ""
+    var tempArray = [Idea]()
+
     
     //variables used to hold the data that will send data to the 'VotingViewController'
     var ideaTitle = ""
@@ -50,16 +57,28 @@ class ActiveTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
         approvedArray.removeAll()
         deniedArray.removeAll()
-        retrieveData()
+        retrieveData(completion: addArray)
         DispatchQueue.main.async {
             //self.retrieveData()
             self.user.checkIfAdmin(completion: self.completeAdminAccess)
             print("In dispatch section ActiveVC")
-
         }
         
+        //setup search bar functionality.
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = ""
+        //searchController.searchBar.barStyle = .default
+        searchController.searchBar.tintColor = UIColor.lightGray
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.keyboardAppearance = .dark
+        navigationItem.searchController = searchController
+
+        definesPresentationContext = true
         
         let defaults = UserDefaults.standard
 
@@ -67,36 +86,27 @@ class ActiveTableViewController: UITableViewController {
         
         approveButton.layer.cornerRadius = 15
         deniedButton.layer.cornerRadius = 15
+        deferButton.layer.cornerRadius = 15
 
     }
+    
     
     override func viewDidAppear(_ animated: Bool) {
 //        approvedArray.removeAll()
 //        deniedArray.removeAll()
-
+       //retrieveData(completion: addArray)
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
         DispatchQueue.main.async {
             self.tableView.reloadData()
             self.user.checkIfAdmin(completion: self.completeAdminAccess)
         }
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(true)
-//        DispatchQueue.main.async {
-//            self.retrieveData()
-//            self.tableView.reloadData()
-//        }
-//        approvedArray.removeAll()
-//        deniedArray.removeAll()
-//
-//        DispatchQueue.main.async {
-//            self.tableView.reloadData()
-//            self.user.checkIfAdmin(completion: self.completeAdminAccess)
-//        }
-//
-//        //NEED MORE TESTING TO SEE WHY ACTIVE IDEAS DUPLICATE
-//
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        //retrieveData(completion: addArray)
+        tableView.reloadData()
+        
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -104,7 +114,29 @@ class ActiveTableViewController: UITableViewController {
     }
     
     
+
     
+    
+    
+    
+//MARK: - SEARCH BAR FUNC
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty{
+            filteredIdeas = allIdeasArray.filter { idea in
+                return idea.ideaID.lowercased().contains(searchController.searchBar.text!.lowercased())
+            }
+        }else if let searchText2 = searchController.searchBar.text, !searchText2.isEmpty{
+            filteredIdeas = allIdeasArray.filter {idea in
+                return idea.ideaDescription.lowercased().contains(searchController.searchBar.text!.lowercased())
+            }
+        }else{
+            filteredIdeas = approvedArray
+        }
+        
+        tableView.reloadData()
+    }
     
     
     
@@ -112,10 +144,12 @@ class ActiveTableViewController: UITableViewController {
     
 //MARK: RETRIEVING AND STORING DATA
     
-    func retrieveData(){
-        
-        //ideaArray.removeAll()
+    func retrieveData(completion: @escaping  (Idea)-> Void){
 
+        approvedArray.removeAll()
+        deniedArray.removeAll()
+        tempArray.removeAll()
+        ideaArray.removeAll()
 
         let ideaDB = Database.database().reference().child("ActiveIdeaDB")
         ideaDB.observe(.childAdded) { (snapshot) in
@@ -128,6 +162,7 @@ class ActiveTableViewController: UITableViewController {
             let active = snapShotValue["Active"]
             let approved = snapShotValue["Approved"]
             let date = snapShotValue["IDEA Added Date"]
+            let deferred = snapShotValue["Deferred"]
 
             let idea = Idea()
             idea.isActive = active as! Bool
@@ -136,6 +171,7 @@ class ActiveTableViewController: UITableViewController {
             idea.ideaID = iD! as! String
             idea.ideaTitle = title as! String
             idea.addDate = date as! String
+            idea.deferred = deferred as! Bool
 
             //to be used for sections if i can
 //            let sections: NSSet = NSSet(array: self.dateArray)
@@ -144,25 +180,28 @@ class ActiveTableViewController: UITableViewController {
 //            }
             
             //self.dateArray.append(self.stringDate)
-
+ 
             
             print("Printing prevID \(self.prevID)")
             
+            self.allIdeasArray.append(idea)
+
+
             if idea.isActive == true && idea.ideaID != self.prevID{
-                self.ideaArray.append(idea)
+                self.tempArray.append(idea)
                 self.prevID = idea.ideaID
             }else if idea.isApproved == true{
                 self.approvedArray.append(idea)
-            }else if idea.isApproved == false{
+            }else if idea.isApproved == false && idea.isActive == false && idea.deferred != true{
                 self.deniedArray.append(idea)
             }
             self.activeIdeaTableView.reloadData()
             self.tableView.reloadData()
+            completion(idea)
         }
-        self.activeIdeaTableView.reloadData()
-        self.tableView.reloadData()
     }
     
+
     
     //part of completion block in the User class.
     //retrieves data to determine if user is an admin or not.
@@ -177,12 +216,26 @@ class ActiveTableViewController: UITableViewController {
     }
     
     
+    func removeArray(){
+        ideaArray.removeAll()
+    }
     
+    
+    
+    //part of the retrieveData completion block
+    func addArray(idea: Idea){
+//        if idea.isActive == true{
+//            ideaArray.append(idea)
+//        }
+        //ideaArray.removeAll()
+        ideaArray = tempArray
+
+        tableView.reloadData()
+    }
     
     
     
 //MARK: -  SET UP TABLE VIEW
-
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -199,8 +252,14 @@ class ActiveTableViewController: UITableViewController {
         }else{
             cell.ideaIDCellLabel.text = ideaArray[indexPath.row].ideaID
             cell.ideaTitleCellLabel.text = ideaArray[indexPath.row].ideaTitle
+            cell.ideaDescriptionLabel.text = ideaArray[indexPath.row].ideaDescription
+            cell.ideaDateLabel.text = ideaArray[indexPath.row].addDate
         }
-        
+
+        //changes the background color when selected.
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.flatPink()
+        cell.selectedBackgroundView = backgroundView
         return cell
     }
     
@@ -218,7 +277,7 @@ class ActiveTableViewController: UITableViewController {
         
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
             let ref = Database.database().reference().child("ActiveIdeaDB/\(self.ideaArray[indexPath.row].ideaID)")
-            ref.removeValue { error, _ in
+                ref.removeValue { error, _ in
             }
             self.ideaArray.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
@@ -227,14 +286,25 @@ class ActiveTableViewController: UITableViewController {
         let edit = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in
             self.ideaID = Int(self.ideaArray[indexPath.row].ideaID)!
             self.performSegue(withIdentifier: "goToAdd", sender: self)
+            
+        }
+        edit.backgroundColor = UIColor.flatSkyBlue()
+        
+        let deferAction = UITableViewRowAction(style: .normal, title: "Defer") { (action, indexPath) in
+            self.ideaID = Int(self.ideaArray[indexPath.row].ideaID)!
+            let ref = Database.database().reference().child("ActiveIdeaDB/\(self.ideaID)")
+            ref.updateChildValues(["Deferred" : true])
+            ref.updateChildValues(["Active" : false])
+            self.ideaArray.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
         
-        edit.backgroundColor = UIColor.flatSkyBlue()
-        return [delete, edit]
+        deferAction.backgroundColor = UIColor.darkGray
+        
+        return [delete, edit, deferAction]
     }
     
-    
-    
+
     
     
     
@@ -262,14 +332,17 @@ class ActiveTableViewController: UITableViewController {
         
         if segue.identifier == "segueToDashboard"{
             let vc3 = segue.destination as! DashboardViewController
-            vc3.numberApproved = approvedArray.count
-            vc3.numberDenied = deniedArray.count
+            vc3.numberApproved = approvedArray.count //these are duplicating each time you go back and forth.
+            vc3.numberDenied = deniedArray.count //these are duplicating each time you go back and forth.
             print("This is from active prepare for segue \(approvedArray.count) and \(deniedArray.count)")
         }
         
         if segue.identifier == "approvedSegue"{
             let vc4 = segue.destination as! ApprovedTableViewController
             vc4.approvedIdeaCount = approvedArray.count
+            for p in approvedArray{
+                print(p)
+            }
         }
     }
     
@@ -295,4 +368,5 @@ class ActiveTableViewController: UITableViewController {
             print("error, there was a problem")
         }
     }
+
 }
