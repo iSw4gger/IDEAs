@@ -1,22 +1,19 @@
 //
-//  ApprovedTableViewCell.swift
+//  ActiveUserTableViewCell.swift
 //  IDEAs
 //
-//  Created by Jared Boynton on 5/28/18.
+//  Created by Jared Boynton on 6/14/18.
 //  Copyright © 2018 Jared Boynton. All rights reserved.
 //
 
 import UIKit
+import Spring
 
-class ApprovedTableViewCell: UITableViewCell {
-
-    @IBOutlet weak var approvedIdeaIDOutlet: UILabel!
+class ActiveUserTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var approvedIdeaTitleOutlet: UILabel!
+    @IBOutlet weak var userNameTextField: UILabel!
     
-    @IBOutlet weak var approvedDescriptionLabel: UILabel!
-    
-    @IBOutlet weak var approvedDateLabel: UILabel!
+    @IBOutlet weak var onlineStatusIndicator: SpringView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

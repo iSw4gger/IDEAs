@@ -44,7 +44,6 @@ class ApprovedTableViewController: UITableViewController, UISearchBarDelegate, U
         
         self.title = "Approved IDEAs"
 
-        
         //setup search bar func.
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
@@ -54,8 +53,8 @@ class ApprovedTableViewController: UITableViewController, UISearchBarDelegate, U
         searchController.searchBar.tintColor = UIColor.lightGray
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.keyboardAppearance = .dark
-        
-        navigationItem.searchController = searchController
+        tableView.tableHeaderView = searchController.searchBar
+        //navigationItem.searchController = searchController
         definesPresentationContext = true
 
         //method call to tap into database to get the values.
@@ -107,6 +106,8 @@ class ApprovedTableViewController: UITableViewController, UISearchBarDelegate, U
         //assign array values to the cells.
         cell.approvedIdeaIDOutlet.text = filteredIdeas[indexPath.row].ideaID
         cell.approvedIdeaTitleOutlet.text = filteredIdeas[indexPath.row].ideaTitle
+        cell.approvedDescriptionLabel.text = filteredIdeas[indexPath.row].ideaDescription
+        cell.approvedDateLabel.text = filteredIdeas[indexPath.row].addDate
         
         //changes the background color when selected.
         let backgroundView = UIView()
@@ -153,9 +154,12 @@ class ApprovedTableViewController: UITableViewController, UISearchBarDelegate, U
             let title = snapShotValue["Idea Title"]
             let numberApp = snapShotValue["Number Approved"]
             let numberDen = snapShotValue["Number Denied"]
+            let date = snapShotValue["IDEA Added Date"]
+
             
 
             let idea = Idea()
+            idea.addDate = date as! String
             idea.ideaTitle = title as! String
             idea.isApproved = approved as! Bool
             idea.isActive = active as! Bool

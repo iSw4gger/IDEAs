@@ -79,13 +79,15 @@ class DashboardViewController: UIViewController {
         graphView.gridBackgroundColor = UIColor.white
         graphView.xAxis.labelTextColor = UIColor.clear
         
+        graphView.leftAxis.axisMinimum = 0.0
+        
         graphView.leftAxis.labelFont = UIFont.boldSystemFont(ofSize: 12)
         graphView.leftAxis.labelTextColor = UIColor.flatPink()
         
         graphView.xAxis.drawAxisLineEnabled = false
         graphView.xAxis.axisLineColor = UIColor.clear
-        
-        
+        graphView.rightAxis.gridColor = UIColor.clear
+                
         graphView.animate(xAxisDuration: 0.5)
         graphView.animate(yAxisDuration: 0.5)
         

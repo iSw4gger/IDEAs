@@ -17,6 +17,7 @@ class User{
     var isAdmin : Bool = false
     var lastName : String = ""
     var firstName : String = ""
+    var isActive : Bool = false
     
 //    init() {
 //        isAdmin = checkIfAdmin()
@@ -40,16 +41,17 @@ class User{
             ideaDB.observe(.value) { (snapshot) in
                 
                 print(snapshot)
-                let snapShotValue = snapshot.value as! Dictionary<String, Any>
-                let admin = snapShotValue["Admin"]!
-                
-                self.isAdmin = admin as! Bool
+                if let snapShotValue = snapshot.value as? Dictionary<String, Any>{
+                    let admin = snapShotValue["Admin"]!
+                    
+                    self.isAdmin = admin as! Bool
 
-                tempAdmin = self.isAdmin
-        
-                print("this is from the User class, 'tempAdmin': \(tempAdmin)")
-                print("this is from the User class, global 'isAdmin': \(self.isAdmin)")
-                completion(tempAdmin)
+                    tempAdmin = self.isAdmin
+            
+                    print("this is from the User class, 'tempAdmin': \(tempAdmin)")
+                    print("this is from the User class, global 'isAdmin': \(self.isAdmin)")
+                    completion(tempAdmin)
+                }
                 }
             }
         }

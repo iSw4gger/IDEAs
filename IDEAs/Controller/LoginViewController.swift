@@ -40,6 +40,15 @@ class LoginViewController: UIViewController {
         //setup remember me functionality
         rememberMeSwitch.addTarget(self, action: #selector(self.stateChanged), for: .valueChanged)
         
+        //set keyboard to dark color.
+        emailAddressTextField.keyboardAppearance = .dark
+        passwordTextField.keyboardAppearance = .dark
+        
+        //set placeholder color
+        emailAddressTextField.attributedPlaceholder = NSAttributedString(string: "Email Address", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+        
+        
         //check if username and password exists as defaults.
         checkUserDefaults()
         

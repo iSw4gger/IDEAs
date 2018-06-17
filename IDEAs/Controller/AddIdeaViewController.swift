@@ -45,6 +45,15 @@ class AddIdeaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        submitButtonOutlet.backgroundColor = UIColor.flatMint()
+        
+        //set placeholder colors to light gray.
+        ideaIDTextField.attributedPlaceholder = NSAttributedString(string: "ID #", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+        
+        ideaTitleTextField.attributedPlaceholder = NSAttributedString(string: "Brief Title", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+
+        briefIdeaDescription.attributedPlaceholder = NSAttributedString(string: "Brief Description", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+        
         //changes the nav bar title
         self.title = "Add an IDEA"
         
@@ -112,7 +121,6 @@ class AddIdeaViewController: UIViewController {
             print("Empty")
         }else{
             print("not empty")
-            submitButtonOutlet.isHidden = false
             ideaIDCheckIfTextOutlet.isHidden = false
             //used the animate function of the Spring class. Assigned the animation within the button properties.
             ideaIDCheckIfTextOutlet.animate()
@@ -128,7 +136,6 @@ class AddIdeaViewController: UIViewController {
         }else{
             print("not empty")
             ideaTitleCheckIfTextOutlet.isHidden = false
-            submitButtonOutlet.isHidden = false
 
             //used the animate function of the Spring class. Assigned the animation within the button properties.
             ideaTitleCheckIfTextOutlet.animate()
@@ -143,6 +150,10 @@ class AddIdeaViewController: UIViewController {
         }else{
             print("not empty")
             ideaDescCheckIfTextOutlet.isHidden = false
+            
+            if ideaDescCheckIfTextOutlet.isHidden == false && ideaTitleCheckIfTextOutlet.isHidden == false && ideaIDCheckIfTextOutlet.isHidden == false{
+                submitButtonOutlet.isHidden = false
+            }
             
             //used the animate function of the Spring class. Assigned the animation within the button properties.
             ideaDescCheckIfTextOutlet.animate()
@@ -168,7 +179,7 @@ class AddIdeaViewController: UIViewController {
         let ideaDB = Database.database().reference().child("ActiveIdeaDB")
         
         //created a dictionary to store the values in the database. Each of these will be separate data points. They come from what the user typed in, plus the original values stored in the Idea class.
-        let ideaDictionary: [String:Any] = ["ID": ideaIDTextField.text!, "Idea Title": ideaTitleTextField.text!, "Idea Description": briefIdeaDescription.text!, "Active": true, "Approved": false, "Number Approved": 0, "Number Denied": 0, "IDEA Added Date": dateString]
+        let ideaDictionary: [String:Any] = ["ID": ideaIDTextField.text!, "Idea Title": ideaTitleTextField.text!, "Idea Description": briefIdeaDescription.text!, "Active": true, "Approved": false, "Number Approved": 0, "Number Denied": 0, "IDEA Added Date": dateString, "Deferred": false]
         
         //we use the 'ActiveIdeaDB' database and insert a child with the ideaID so that all the values above can be stored within each ID. Must use closure for error checking.
         ideaDB.child(ideaIDTextField.text!).setValue(ideaDictionary){
@@ -187,13 +198,6 @@ class AddIdeaViewController: UIViewController {
     }
     
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "backToActive"{
-            let vc = segue.destination as! ActiveTableViewController
-            //vc.ideaArray.removeAll()
-        }
-    }
-    
     
 //MARK: - GETTING TIME STAMP WHEN ADD IDEA
     
@@ -206,6 +210,13 @@ class AddIdeaViewController: UIViewController {
         dateString = formatter.string(from: now)
         print(dateString)
     }
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "backToActive"{
+//            let vc = segue.destination as! ActiveTableViewController
+//            vc.removeArray()
+//        }
+//    }
 }
     
 

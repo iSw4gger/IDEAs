@@ -14,6 +14,11 @@ class DeniedTableViewCell: UITableViewCell {
     @IBOutlet weak var deniedTitleCellLabel: UILabel!
     
     
+    @IBOutlet weak var deniedDescriptionLabel: UILabel!
+    
+    @IBOutlet weak var deniedDateLabel: UILabel!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

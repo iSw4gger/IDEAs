@@ -39,9 +39,12 @@ class DeniedTableViewController: UITableViewController, UISearchResultsUpdating 
         searchController.searchBar.barStyle = .default
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.keyboardAppearance = .dark
-        navigationItem.searchController = searchController
-        definesPresentationContext = true
         
+        //sets search bar to black and text to white
+        searchController.searchBar.barStyle = .black;
+        definesPresentationContext = true
+        tableView.tableHeaderView = searchController.searchBar
+
         //method call to tap into database to get the values.
         retrieveData()
     }
@@ -62,6 +65,8 @@ class DeniedTableViewController: UITableViewController, UISearchResultsUpdating 
         //assign array values to the cells.
         cell.deniedIDCellLabel.text = filteredIdeas[indexPath.row].ideaID
         cell.deniedTitleCellLabel.text = filteredIdeas[indexPath.row].ideaTitle
+        cell.deniedDescriptionLabel.text = filteredIdeas[indexPath.row].ideaDescription
+        cell.deniedDateLabel.text = filteredIdeas[indexPath.row].addDate
         
         //changes the background color when selected.
         let backgroundView = UIView()
@@ -123,8 +128,12 @@ class DeniedTableViewController: UITableViewController, UISearchResultsUpdating 
             let title = snapShotValue["Idea Title"]
             let numberApp = snapShotValue["Number Approved"]
             let numberDen = snapShotValue["Number Denied"]
+            let deferred = snapShotValue["Deferred"]
+            let date = snapShotValue["IDEA Added Date"]
+
             
             let idea = Idea()
+            idea.addDate = date as! String
             idea.ideaTitle = title as! String
             idea.isApproved = approved as! Bool
             idea.isActive = active as! Bool
@@ -132,8 +141,9 @@ class DeniedTableViewController: UITableViewController, UISearchResultsUpdating 
             idea.ideaDescription = description as! String
             idea.numberApproved = numberApp as! Int
             idea.numberDenied = numberDen as! Int
+            idea.deferred = deferred as! Bool
             
-            if idea.isApproved == false{
+            if idea.isApproved == false && idea.deferred != true && idea.isActive == false{
                 self.deniedArray.append(idea)
                 self.filteredIdeas.append(idea)
             }
